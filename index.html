@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CivicAssembly | Civic Connect Portal</title>
+  <meta name="description" content="CivicAssembly — Report civic issues, track resolutions, and build a better community together. Your platform for local governance." />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+  <!-- Google Identity Services (Sign In with Google) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- Styles (No Tailwind!) -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="responsive.css" />
+</head>
+<body>
+
+  <!-- ====== Toast Container ====== -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- ====== Top Navigation ====== -->
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <button class="hamburger-btn" id="hamburger-btn" title="Menu">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <span class="logo" style="cursor:pointer" onclick="App.navigate(Auth.isLoggedIn() ? 'home' : 'signin')">CivicAssembly</span>
+        <div class="nav-links">
+          <a href="#home" data-view="home">Home</a>
+          <a href="#report" data-view="report">Report</a>
+          <a href="#issues" data-view="issues">Issues</a>
+          <a href="#analytics" data-view="analytics">Analytics</a>
+          <a href="#leaderboard" data-view="leaderboard">Leaderboard</a>
+          <a href="#rewards" data-view="rewards">Rewards</a>
+        </div>
+      </div>
+      <div class="nav-right" id="nav-auth-area">
+        <button class="btn-signin" onclick="App.navigate('signin')">Sign In</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ====== Mobile Navigation Overlay ====== -->
+  <div class="mobile-nav-overlay hidden" id="mobile-nav-overlay">
+    <div class="mobile-nav-menu">
+      <div class="mobile-nav-header">
+        <span class="logo">CivicAssembly</span>
+        <button class="mobile-nav-close" id="mobile-nav-close">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <nav class="mobile-nav-links">
+        <a href="#home" data-view="home">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#issues" data-view="issues">
+          <span class="material-symbols-outlined">list_alt</span>
+          <span>All Issues</span>
+        </a>
+        <a href="#report" data-view="report">
+          <span class="material-symbols-outlined">add_circle</span>
+          <span>Report Issue</span>
+        </a>
+        <a href="#analytics" data-view="analytics">
+          <span class="material-symbols-outlined">bar_chart</span>
+          <span>Analytics</span>
+        </a>
+        <a href="#discussions" data-view="discussions">
+          <span class="material-symbols-outlined">forum</span>
+          <span>Discussions</span>
+        </a>
+        <a href="#profile" data-view="profile">
+          <span class="material-symbols-outlined">person</span>
+          <span>My Profile</span>
+        </a>
+        <a href="#leaderboard" data-view="leaderboard">
+          <span class="material-symbols-outlined">leaderboard</span>
+          <span>Leaderboard</span>
+        </a>
+        <a href="#rewards" data-view="rewards">
+          <span class="material-symbols-outlined">redeem</span>
+          <span>Rewards</span>
+        </a>
+      </nav>
+      <div class="mobile-nav-auth" id="mobile-nav-auth">
+        <!-- Updated dynamically by auth.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== Sidebar ====== -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Assembly Console</h2>
+      <p>City Governance</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#home" data-view="home">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="#issues" data-view="issues">
+        <span class="material-symbols-outlined">list_alt</span>
+        <span>All Issues</span>
+      </a>
+      <a href="#report" data-view="report">
+        <span class="material-symbols-outlined">add_circle</span>
+        <span>Report Issue</span>
+      </a>
+      <a href="#discussions" data-view="discussions">
+        <span class="material-symbols-outlined">forum</span>
+        <span>Discussions</span>
+      </a>
+      <a href="#analytics" data-view="analytics">
+        <span class="material-symbols-outlined">bar_chart</span>
+        <span>Analytics</span>
+      </a>
+      <a href="#profile" data-view="profile">
+        <span class="material-symbols-outlined">person</span>
+        <span>My Profile</span>
+      </a>
+      <a href="#leaderboard" data-view="leaderboard">
+        <span class="material-symbols-outlined">leaderboard</span>
+        <span>Leaderboard</span>
+      </a>
+      <a href="#rewards" data-view="rewards">
+        <span class="material-symbols-outlined">redeem</span>
+        <span>Rewards</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ====== Main Content Area ====== -->
+  <main class="main-content">
+    <div class="content-container">
+
+      <!-- Auth Views -->
+      <div id="view-signin" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <div id="view-signup" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <div id="view-forgot-password" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <!-- App Views -->
+      <div id="view-home" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <div id="view-report" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <div id="view-issues" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <div id="view-analytics" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <div id="view-profile" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <div id="view-discussions" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <div id="view-discussion-detail" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <div id="view-notifications" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <div id="view-leaderboard" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+      <div id="view-rewards" class="view">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ====== Issue Detail Modal ====== -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal-content" id="modal-content">
+      <!-- Populated dynamically by ui.js -->
+    </div>
+  </div>
+
+  <!-- ====== Confirm Dialog ====== -->
+  <div id="confirm-overlay" class="modal-overlay hidden">
+    <div class="confirm-dialog" id="confirm-dialog">
+      <!-- Populated dynamically by ui.js -->
+    </div>
+  </div>
+
+  <!-- ====== Floating Action Button ====== -->
+  <button class="fab hidden" id="fab-report" onclick="App.navigate('report')" title="Report Issue">
+    <span class="material-symbols-outlined">add</span>
+  </button>
+
+  <!-- ====== Footer ====== -->
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div>
+        <span class="footer-brand">CivicAssembly</span>
+        <p class="footer-copy">&copy; 2024 Digital Assembly Civic Editorial. For the Public Good.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Accessibility</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact Administration</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ====== Firebase SDK (v10.7.1) ====== -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <!-- ====== Database Layer ====== -->
+  <script src="db/firebase.js"></script>
+  <script src="db/database.js"></script>
+
+  <!-- ====== JavaScript Modules (order matters) ====== -->
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/events.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
